@@ -24,7 +24,6 @@ class CourseFactory extends Factory
             'location'=> fake()->address(),
             'activity_id'=> fake()->randomElement($activity_ids),
             'slot_id'=> fake()->randomElement($slot_ids),
-
         ];
     }
 }

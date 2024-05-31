@@ -15,6 +15,7 @@ class CourseSeeder extends Seeder
     public function run(): void
     {
         Course::factory(20)->create();
+        
         $courses = Course::all()->all();
         $user_ids = User::all()->pluck('id')->all();
         foreach ($courses as $course) {
@@ -23,8 +24,6 @@ class CourseSeeder extends Seeder
 
                 $course->users()->attach($user_id, ['status' => 'pending']);
             }
-
-
        }
     }
 }
