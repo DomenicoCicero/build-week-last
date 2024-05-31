@@ -11,6 +11,8 @@ class Course extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     public function activity(): BelongsTo
     {
         return $this->belongsTo(Activity::class);

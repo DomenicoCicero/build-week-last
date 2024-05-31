@@ -17,7 +17,10 @@ class SlotFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'day'=>fake()->date(),
+            'start_time'=>fake()->time(),
+            'end_time'=>fake()->time(),
+            
         ];
     }
 }

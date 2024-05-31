@@ -17,7 +17,8 @@ class ActivityFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->words(rand(3, 5), true),
+            'description' => fake()->text(rand(20, 50)),
         ];
     }
 }

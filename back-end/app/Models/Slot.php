@@ -10,6 +10,8 @@ class Slot extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class);
