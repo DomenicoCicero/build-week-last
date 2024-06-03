@@ -42,6 +42,9 @@ const Register = () => {
 
   return (
     <>
+      {/* {errors && <div class="alert alert-danger" role="alert">
+  
+</div>} */}
       <h1 className="text-center">Registrazione</h1>
       <form onSubmit={(e) => handleSubmitRegister(e)} noValidate>
         <div className="mb-3">

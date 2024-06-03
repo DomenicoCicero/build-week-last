@@ -1,17 +1,21 @@
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { LOGOUT } from "../redux/actions";
 
 const MyNavbar = () => {
-  const user = useSelector(state => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => {
     return state.user;
   });
 
-  //   const logout = () => {
-  //     axios
-  //       .post("/logout")
-  //       .then(() => dispatch({ type: LOGOUT }))
-  //       .then(() => navigate("/login"));
-  //   };
+  const logout = () => {
+    axios
+      .post("/logout")
+      .then(() => dispatch({ type: LOGOUT }))
+      .then(() => navigate("/login"));
+  };
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -35,7 +39,11 @@ const MyNavbar = () => {
               </Link>
             </li>
             <li className="nav-item dropdown">
-              <Link className="nav-link dropdown-toggle" to="/" data-bs-toggle="dropdown">
+              <Link
+                className="nav-link dropdown-toggle"
+                to="/"
+                data-bs-toggle="dropdown"
+              >
                 Dropdown
               </Link>
               <ul className="dropdown-menu">
@@ -70,11 +78,24 @@ const MyNavbar = () => {
             <>
               <span className="me-2">{user.name}</span>
               {/* se l'utente non ha immagine profilo gli diamo una di default */}
-              <img src={`/storage/${user.profile_img}`} alt="" width={"50px"} />
-              <button
-                className="btn btn-primary"
-                // onClick={logout}
-              >
+              {user.profile_img && (
+                <img
+                  src={`/storage/${user.profile_img}`}
+                  alt=""
+                  width={"50px"}
+                  className="rounded-circle"
+                />
+              )}
+              {!user.profile_img && (
+                <img
+                  src={`https://www.tnt-endourology.com/wp-content/uploads/2016/05/icona2.png`}
+                  alt=""
+                  width={"50px"}
+                  className="rounded-circle"
+                />
+              )}
+
+              <button className="btn btn-primary" onClick={logout}>
                 Logout
               </button>
             </>

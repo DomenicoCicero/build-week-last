@@ -10,21 +10,32 @@ const Login = () => {
     password: "",
   });
 
-  const handleSubmitLogin = e => {
+  const [errors, setErrors] = useState(null);
+
+  const handleSubmitLogin = (e) => {
     e.preventDefault();
     axios
       .get(`/sanctum/csrf-cookie`)
       .then(() => axios.post(`/login`, formData))
       .then(() => axios.get("/api/user"))
-      .then(res => {
+      .then((res) => {
         dispatch(login(res.data));
         console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err.response.data.errors);
+        setErrors(err.response.data.errors);
       });
   };
   return (
     <>
+      {errors && (
+        <div class="alert alert-danger" role="alert">
+          {errors.email && errors.email[0]}
+        </div>
+      )}
       <h1 className="text-center">Login</h1>
-      <form onSubmit={e => handleSubmitLogin(e)} noValidate>
+      <form onSubmit={(e) => handleSubmitLogin(e)} noValidate>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Email address
@@ -34,7 +45,7 @@ const Login = () => {
             className="form-control"
             id="email"
             name="email"
-            onChange={e => {
+            onChange={(e) => {
               setFormData({
                 ...formData,
                 email: e.target.value,
@@ -52,7 +63,7 @@ const Login = () => {
             className="form-control"
             id="password"
             name="password"
-            onChange={e => {
+            onChange={(e) => {
               setFormData({
                 ...formData,
                 password: e.target.value,

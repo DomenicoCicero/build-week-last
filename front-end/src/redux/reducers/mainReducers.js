@@ -11,11 +11,11 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         user: action.payload,
       };
-    // case LOGOUT:
-    //   return {
-    //     ...state,
-    //     user: null,
-    //   };
+    case LOGOUT:
+      return {
+        ...state,
+        user: null,
+      };
 
     default:
       return state;
