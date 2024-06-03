@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -13,7 +15,25 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+        $courses = Course::with('activity', 'slot')->get();
+        return $courses;
+    }
+
+
+    public function coursesForUser()
+    {
+        $user_id = Auth::user()->id;
+
+        $coursesForUser = User::with('courses')->find($user_id);  
+
+        if(!$coursesForUser) {
+            return response(['exist' => false]);
+        } else {
+            return [
+                'exist' => true,
+                'data' => $coursesForUser
+            ];
+        }
     }
 
     /**
@@ -35,9 +55,16 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Course $course)
+    public function show($id)
     {
-        //
+        $course = Course::with('activity', 'slot')->find($id);
+        if(!$course) {
+            return response(['message' => 'Not found'], 404);
+        } else {
+            return [
+                'data' => $course
+            ];
+        }
     }
 
     /**

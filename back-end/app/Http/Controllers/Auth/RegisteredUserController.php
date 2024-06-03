@@ -28,7 +28,7 @@ class RegisteredUserController extends Controller
             'profile_img' => ['nullable', 'image', 'max:1024']
         ]);
 
-        $file_path = Storage::put('', $request['profile_img']);
+        $file_path = $request->hasFile('profile_img') ? Storage::put('', $request->file('profile_img')) : null;
 
         $user = User::create([
             'name' => $request->name,
