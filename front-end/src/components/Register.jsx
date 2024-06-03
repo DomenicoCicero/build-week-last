@@ -1,8 +1,49 @@
+import axios from "axios";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/actions";
+
 const Register = () => {
+  const dispatch = useDispatch();
+  const [profileImage, setProfileImage] = useState(null);
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+    profile_img: "",
+  });
+
+  const [errors, setErrors] = useState(null);
+
+  const handleSubmitRegister = (e) => {
+    e.preventDefault();
+    axios
+      .get(`/sanctum/csrf-cookie`)
+      .then(() => {
+        const body = new FormData();
+        body.append("name", data.name);
+        body.append("email", data.email);
+        body.append("password", data.password);
+        body.append("password_confirmation", data.password_confirmation);
+        body.append("profile_img", profileImage);
+
+        return axios.post(`/register`, body);
+      })
+      .then(() => axios.get("/api/user"))
+      .then((res) => {
+        dispatch(login(res.data));
+      })
+      .catch((err) => {
+        console.log(err.response.data.errors);
+        setErrors(err.response.data.errors);
+      });
+  };
+
   return (
     <>
       <h1 className="text-center">Registrazione</h1>
-      <form noValidate>
+      <form onSubmit={(e) => handleSubmitRegister(e)} noValidate>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
             Name
@@ -12,8 +53,13 @@ const Register = () => {
             className="form-control"
             id="name"
             name="name"
-            // onChange={e => updateInputValue(e)}
-            // value={formData.name}
+            onChange={(e) => {
+              setData({
+                ...data,
+                name: e.target.value,
+              });
+            }}
+            value={data.name}
           />
         </div>
         <div className="mb-3">
@@ -25,8 +71,13 @@ const Register = () => {
             className="form-control"
             id="email"
             name="email"
-            // onChange={e => updateInputValue(e)}
-            // value={formData.email}
+            onChange={(e) => {
+              setData({
+                ...data,
+                email: e.target.value,
+              });
+            }}
+            value={data.email}
           />
         </div>
         <div className="mb-3">
@@ -38,8 +89,13 @@ const Register = () => {
             className="form-control"
             id="password"
             name="password"
-            // onChange={e => updateInputValue(e)}
-            // value={formData.password}
+            onChange={(e) => {
+              setData({
+                ...data,
+                password: e.target.value,
+              });
+            }}
+            value={data.password}
           />
         </div>
         <div className="mb-3">
@@ -51,8 +107,13 @@ const Register = () => {
             className="form-control"
             id="password_confirmation"
             name="password_confirmation"
-            // onChange={e => updateInputValue(e)}
-            // value={formData.password_confirmation}
+            onChange={(e) => {
+              setData({
+                ...data,
+                password_confirmation: e.target.value,
+              });
+            }}
+            value={data.password_confirmation}
           />
         </div>
         <div className="mb-3">
@@ -64,8 +125,14 @@ const Register = () => {
             type="file"
             id="profile_img"
             name="profile_img"
-            // onChange={e => updateImageField(e)}
-            // value={formData.profile_img}
+            onChange={(e) => {
+              setData({
+                ...data,
+                profile_img: e.target.value,
+              });
+              setProfileImage(e.target.files[0]);
+            }}
+            value={data.profile_img}
           />
         </div>
         <button type="submit" className="btn btn-primary">
