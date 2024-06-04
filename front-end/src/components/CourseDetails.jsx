@@ -8,32 +8,32 @@ const CourseDetails = () => {
 
   const getDetailsCourse = () => {
     fetch(`/api/courses/${id}`)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
           throw new Error("Errore nel reperimento dei dati");
         }
       })
-      .then(data => {
+      .then((data) => {
         console.log(data.data);
         setCourse(data.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
   const existCourse = () => {
     fetch(`/api/courses_for_user`)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
           throw new Error("Errore nel reperimento dei dati");
         }
       })
-      .then(data => {
+      .then((data) => {
         console.log(data);
         if (data.exist) {
           for (let i = 0; i < data.data.courses.length; i++) {
@@ -48,7 +48,27 @@ const CourseDetails = () => {
           setCourseAssocied(false);
         }
       })
-      .catch(err => {
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const prenota = () => {
+    fetch(`/api/add_course_user`, {
+      method: "post",
+      body: { course_id: parseInt(id) },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Errore nel reperimento dei dati");
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -65,7 +85,9 @@ const CourseDetails = () => {
         <div className="card">
           <div className="card-body">
             <h5 className="card-title">{course.activity.name}</h5>
-            <h6 className="card-subtitle mb-2 text-body-secondary">{course.slot.day}</h6>
+            <h6 className="card-subtitle mb-2 text-body-secondary">
+              {course.slot.day}
+            </h6>
             <p>
               <span className="fw-bold">Inizio: </span>
               {course.slot.start_time}
@@ -85,7 +107,11 @@ const CourseDetails = () => {
               </button>
             )}
             {courseAssocied === false && (
-              <button type="button" className="btn btn-success">
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={prenota}
+              >
                 Prenota
               </button>
             )}

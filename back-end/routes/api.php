@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CourseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,4 +15,5 @@ Route::get("/courses", [CourseController::class, 'index']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get("/courses/{course}", [CourseController::class, 'show']);
     Route::get("/courses_for_user", [CourseController::class, 'coursesForUser']);
+    Route::post("/add_course_user", [BookingController::class, 'addCourseUser']);
 });
