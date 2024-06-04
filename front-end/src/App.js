@@ -9,6 +9,7 @@ import CourseDetails from "./components/CourseDetails";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { login } from "./redux/actions";
+import MyCourses from "./components/MyCourses";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -20,8 +21,8 @@ function App() {
   useEffect(() => {
     axios
       .get("/api/user")
-      .then(res => dispatch(login(res.data)))
-      .catch(err => console.log(err))
+      .then((res) => dispatch(login(res.data)))
+      .catch((err) => console.log(err))
       .finally(() => setLoaded(true));
   }, [dispatch]);
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
             <Route path="/courses/:id" element={<CourseDetails />} />
+            <Route path="/my_courses" element={<MyCourses />} />
           </Routes>
         </div>
       </BrowserRouter>

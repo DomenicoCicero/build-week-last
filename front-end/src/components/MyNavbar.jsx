@@ -38,6 +38,11 @@ const MyNavbar = () => {
                 Home
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link active" to="/my_courses">
+                i miei corsi
+              </Link>
+            </li>
             <li className="nav-item dropdown">
               <Link
                 className="nav-link dropdown-toggle"

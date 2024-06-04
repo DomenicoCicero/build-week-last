@@ -42,4 +42,19 @@ class BookingController extends Controller
         ], 200);
     }
 
+    public function coursesUser()
+    {
+        $user_id = Auth::user()->id;
+
+        $courses = DB::table('course_user')
+                       ->where('user_id', $user_id)
+                       ->join('courses', 'course_user.course_id', '=', 'courses.id')
+                       ->select('courses.*')
+                       ->get();
+                       return response()->json([
+                        'courses' => $courses
+                       ], 200);
+    }
+    
+
 }
