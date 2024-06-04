@@ -54,4 +54,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Course::class)->withPivot('status');
     }
+
+    public function isAdmin() {
+        return $this->role === 'admin';
+    }
 }

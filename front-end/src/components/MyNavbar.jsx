@@ -6,7 +6,7 @@ import { LOGOUT } from "../redux/actions";
 const MyNavbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => {
+  const user = useSelector(state => {
     return state.user;
   });
 
@@ -44,28 +44,28 @@ const MyNavbar = () => {
               </Link>
             </li>
             <li className="nav-item dropdown">
-              <Link
-                className="nav-link dropdown-toggle"
-                to="/"
-                data-bs-toggle="dropdown"
-              >
-                Dropdown
-              </Link>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/">
-                    Action
+              {user && user.role === "admin" && (
+                <>
+                  <Link className="nav-link dropdown-toggle" to="/" data-bs-toggle="dropdown">
+                    Gestione Admin
                   </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/">
-                    Something else here
-                  </Link>
-                </li>
-              </ul>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link className="dropdown-item" to="/admin/courses">
+                        Corsi Da Verificare
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/">
+                        Something else here
+                      </Link>
+                    </li>
+                  </ul>
+                </>
+              )}
             </li>
           </ul>
           {!user && (
@@ -84,12 +84,7 @@ const MyNavbar = () => {
               <span className="me-2">{user.name}</span>
               {/* se l'utente non ha immagine profilo gli diamo una di default */}
               {user.profile_img && (
-                <img
-                  src={`/storage/${user.profile_img}`}
-                  alt=""
-                  width={"50px"}
-                  className="rounded-circle"
-                />
+                <img src={`/storage/${user.profile_img}`} alt="" width={"50px"} className="rounded-circle" />
               )}
               {!user.profile_img && (
                 <img

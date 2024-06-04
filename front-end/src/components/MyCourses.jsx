@@ -7,18 +7,18 @@ const MyCourses = () => {
 
   const getMyCourses = () => {
     fetch(`/api/my_courses`)
-      .then((response) => {
+      .then(response => {
         if (response.ok) {
           return response.json();
         } else {
           throw new Error("errore nel reperimento dei dati");
         }
       })
-      .then((data) => {
+      .then(data => {
         console.log(data);
         setMyCourses(data.courses);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   };
@@ -31,19 +31,13 @@ const MyCourses = () => {
     <div>
       <h2 className="text-center">I miei Corsi</h2>
       <ListGroup>
-        {myCourses.map((course) => {
+        {myCourses.map(course => {
           return (
-            <Link
-              key={course.id}
-              to={`/courses/${course.id}`}
-              className="nav-link"
-            >
+            <Link key={course.id} to={`/courses/${course.id}`} className="nav-link">
               <ListGroup.Item>
                 <div className="d-flex justify-content-between">
                   <p className="fs-5">{course.activity_name}</p>
-                  <span className="badge fs-5 text-bg-secondary">
-                    {course.status}
-                  </span>
+                  <span className="badge fs-5 text-bg-secondary">{course.status}</span>
                 </div>
               </ListGroup.Item>
             </Link>

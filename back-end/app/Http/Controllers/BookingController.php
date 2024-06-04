@@ -64,6 +64,62 @@ class BookingController extends Controller
                         'courses' => $courses
                        ], 200);
     }
+
+    public function getCoursesUsers()
+    {
+        $courses = DB::table('course_user')
+            ->join('courses', 'course_user.course_id', '=', 'courses.id')            
+            ->leftJoin('activities', 'courses.activity_id', '=', 'activities.id')
+            ->leftJoin('slots', 'courses.slot_id', '=', 'slots.id')
+            ->leftJoin('users', 'course_user.user_id', '=', 'users.id')
+            ->select(
+                'courses.*',
+                'course_user.status',
+                'activities.name as activity_name', 
+                'slots.day as slot_day'  ,
+                'users.name as user_name',
+                'users.id as user_id'
+                )
+            ->get();
+        
+            return response()->json([
+                'courses' => $courses
+               ], 200);
+    }
+
+    public function acceptedCoursesUsers($course_id, Request $request)
+    {
+        $course = DB::table('course_user')
+        ->where('course_id', $course_id)
+        ->where('user_id', $request->user_id)
+        ->first();
+
+        if($course) {
+            DB::table('course_user')
+            ->where('course_id', $course_id)
+            ->where('user_id', $request->user_id)
+            ->update(['status' => 'accepted']);
+
+            return response()->json(['message' => 'Stato del corso aggiornato con successo'], 200);
+        }
+    }
+
+    public function rejectedCoursesUsers($course_id, Request $request)
+    {
+        $course = DB::table('course_user')
+        ->where('course_id', $course_id)
+        ->where('user_id', $request->user_id)
+        ->first();
+
+        if($course) {
+            DB::table('course_user')
+            ->where('course_id', $course_id)
+            ->where('user_id', $request->user_id)
+            ->update(['status' => 'rejected']);
+
+            return response()->json(['message' => 'Stato del corso aggiornato con successo'], 200);
+        }
+    }
     
 
 }
