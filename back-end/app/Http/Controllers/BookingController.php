@@ -25,12 +25,21 @@ class BookingController extends Controller
         return response()->json([
             'message'=> 'aggiunto con successo'
 
-        ], 200);
-
-       
-
-        
+        ], 200); 
     }
 
+    public function deleteCourseUser($id) 
+    {
+        $user_id = Auth::user()->id;
+
+        DB::table('course_user')
+            ->where('user_id', $user_id)
+            ->where('course_id', $id)
+            ->delete();
     
+        return response()->json([
+            'message' => 'Corso rimosso con successo'
+        ], 200);
+    }
+
 }
