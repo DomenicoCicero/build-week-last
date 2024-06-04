@@ -49,7 +49,16 @@ class BookingController extends Controller
         $courses = DB::table('course_user')
                        ->where('user_id', $user_id)
                        ->join('courses', 'course_user.course_id', '=', 'courses.id')
-                       ->select('courses.*')
+                       
+                       
+                       ->leftJoin('activities', 'courses.activity_id', '=', 'activities.id')
+                       ->leftJoin('slots', 'courses.slot_id', '=', 'slots.id')
+                       ->select(
+                           'courses.*',
+                           'course_user.status',
+                           'activities.name as activity_name', 
+                           'slots.day as slot_day'           
+                       )
                        ->get();
                        return response()->json([
                         'courses' => $courses
