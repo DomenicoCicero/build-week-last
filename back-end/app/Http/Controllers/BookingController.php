@@ -67,6 +67,11 @@ class BookingController extends Controller
 
     public function getCoursesUsers()
     {
+        $user = Auth::user();
+        if ($user->role === 'admin'){
+
+       
+
         $courses = DB::table('course_user')
             ->join('courses', 'course_user.course_id', '=', 'courses.id')            
             ->leftJoin('activities', 'courses.activity_id', '=', 'activities.id')
@@ -85,6 +90,12 @@ class BookingController extends Controller
             return response()->json([
                 'courses' => $courses
                ], 200);
+
+            }else {
+                return response()->json([
+                    'message' => 'non autorizzato'
+                ], 401);
+            }  
     }
 
     public function acceptedCoursesUsers($course_id, Request $request)

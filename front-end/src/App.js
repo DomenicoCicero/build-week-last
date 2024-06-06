@@ -25,8 +25,8 @@ function App() {
   useEffect(() => {
     axios
       .get("/api/user")
-      .then(res => dispatch(login(res.data)))
-      .catch(err => console.log(err))
+      .then((res) => dispatch(login(res.data)))
+      .catch((err) => console.log(err))
       .finally(() => setLoaded(true));
   }, [dispatch]);
 
@@ -49,9 +49,8 @@ function App() {
               <Route path="/my_courses" element={<MyCourses />} />
             </Route>
             {/* rotte solo se si è collegati e si è admin */}
-            <Route element={<AdminRoutes />}>
-              <Route path="/admin/courses" element={<AdminCourses />} />
-            </Route>
+            <Route element={<AdminRoutes />}></Route>
+            <Route path="/admin/courses" element={<AdminCourses />} />
           </Routes>
         </div>
       </BrowserRouter>
